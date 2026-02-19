@@ -2,29 +2,6 @@ from physics import sph
 from rendering import renderer
 from scene import scene
 import time
-
-def main_taichi():
-    import taichi as ti
-    ti.init(arch=ti.gpu)
-    window = ti.ui.Window('GPU SPH Demo', (1024, 768))
-    canvas = window.get_canvas()
-    scene.setup_example_scene()
-    slow_motion = False
-    last = time.time()
-    while window.running:
-        now = time.time()
-        dt = 1.0 / 60.0
-        if slow_motion:
-            dt *= 0.2
-        sph.step(dt)
-        canvas.clear(0x112233)
-        renderer.draw_particles(window, canvas)
-        n = int(sph.particle_count[None])
-        if now - last > 0.5:
-            print(f"FPS ~ {1.0 / max(1e-6, now - last):.1f}  Particles: {n}")
-            last = now
-        window.show()
-
 def main_matplotlib():
     import matplotlib.pyplot as plt
     scene.setup_example_scene()
